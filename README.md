@@ -2,7 +2,6 @@ Kotlin app for Revolut Android Developer position assignment.
 
 ### Libraries
 * [Android Architecture Components][arch]
-  * ViewModel/LiveData
 * [DataBinding][databinding]
 * [RxJava2][rx]
 * [Dagger2][dagger]
