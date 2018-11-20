@@ -18,6 +18,8 @@
         <!-- focusableInTouchMode is here to prevent EditText from autofocus -->
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:focusableInTouchMode="true"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -34,6 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
+                    android:textSize="18sp"
                     android:text="@{viewHolder.name}"
                     android:textStyle="bold"
                     tools:text="name"
