@@ -1,15 +1,14 @@
 package com.dmide.revolutassignment.ui
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
+import com.dmide.revolutassignment.common.CropCircleTransformation
 import com.dmide.revolutassignment.databinding.ListItemBinding
 import com.dmide.revolutassignment.model.Currency
-import javax.inject.Inject
+import com.squareup.picasso.Picasso
+
 
 class CurrencyViewHolder(val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    @Inject
-    lateinit var context: Context //TODO load icons using Picasso.with(context)
 
     val name = MutableLiveData<String>()
     val rate = MutableLiveData<String>()
@@ -17,6 +16,11 @@ class CurrencyViewHolder(val binding: ListItemBinding) : RecyclerView.ViewHolder
     fun bind(currency: Currency) {
         name.value = currency.name
         rate.value = "%.2f".format(currency.rate)
+
+        Picasso.get().load("file:///android_asset/icons_currency/${currency.name.toLowerCase()}.png")
+            .transform(CropCircleTransformation())
+            .into(binding.icon);
+
         binding.viewHolder = this
     }
 }

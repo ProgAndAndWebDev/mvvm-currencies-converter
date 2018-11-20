@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dmide.revolutassignment.R
-import com.dmide.revolutassignment.common.CurrenciesApplication
 import com.dmide.revolutassignment.databinding.ListItemBinding
 import com.dmide.revolutassignment.model.Currency
 
@@ -27,9 +26,7 @@ class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, currenciesViewMo
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         val binding: ListItemBinding =
             DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.list_item, parent, false)
-        val postViewHolder = CurrencyViewHolder(binding)
-        (parent.context.applicationContext as CurrenciesApplication).component.inject(postViewHolder)
-        return postViewHolder
+        return CurrencyViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {

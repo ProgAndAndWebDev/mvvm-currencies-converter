@@ -13,8 +13,6 @@ interface AppComponent {
 
     fun inject(currenciesViewModel: CurrenciesViewModel)
 
-    fun inject(currencyViewHolder: CurrencyViewHolder)
-
     @Component.Builder
     interface Builder {
         fun build(): AppComponent
