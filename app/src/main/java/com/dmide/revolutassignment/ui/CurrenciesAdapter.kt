@@ -42,6 +42,7 @@ class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, currenciesViewMo
     }
 
     private fun dispatchListUpdate(newList: List<Currency>) {
+        // the list is small enough to have an update time way under 16ms (1-2ms on Nexus 5X), so no need for async version
         val diffResult = DiffUtil.calculateDiff(ListDiffUtilCallback(currencyList, newList))
         currencyList = newList
         diffResult.dispatchUpdatesTo(this)
