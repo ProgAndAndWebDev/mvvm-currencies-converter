@@ -16,7 +16,7 @@ class CurrencyViewHolder(val binding: ListItemBinding) : RecyclerView.ViewHolder
 
     fun bind(currency: Currency) {
         name.value = currency.name
-        rate.value = currency.rate.toString()
+        rate.value = "%.2f".format(currency.rate)
         binding.viewHolder = this
     }
 }

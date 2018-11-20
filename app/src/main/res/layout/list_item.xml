@@ -49,6 +49,7 @@
                     android:singleLine="true"
                     android:text="@{viewHolder.rate}"
                     tools:text="rate"
+                    android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
             
