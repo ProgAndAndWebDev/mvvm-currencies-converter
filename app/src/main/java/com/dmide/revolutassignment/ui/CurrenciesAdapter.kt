@@ -13,14 +13,38 @@ import com.dmide.revolutassignment.model.Currency
 class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, currenciesViewModel: CurrenciesViewModel) :
     RecyclerView.Adapter<CurrencyViewHolder>() {
 
-    var currencyList: List<Currency> = listOf()
+    private var currencyList: List<Currency> = listOf()
+    private var pendingListUpdate: List<Currency>? = null
+    private var isScrolling: Boolean = false
 
     init {
-        currenciesViewModel.currenciesLiveData.observe(currenciesActivity, Observer {
-            val diffResult = DiffUtil.calculateDiff(ListDiffUtilCallback(currencyList, it))
-            currencyList = it
-            diffResult.dispatchUpdatesTo(this)
+        currenciesViewModel.currenciesLiveData.observe(currenciesActivity, Observer { newList ->
+            if (isScrolling) {
+                // This is more verbose than for example 'skipWhile {isScrolling}'
+                // but preserves the pending value in case of connection lost.
+                // Although there should be the way to do it using RX, I can't come up with a simple one.
+                pendingListUpdate = newList
+                return@Observer
+            }
+            dispatchListUpdate(newList)
         })
+
+        currenciesViewModel.scrollStateLiveData.observe(currenciesActivity, Observer { scrollState ->
+            isScrolling = scrollState != RecyclerView.SCROLL_STATE_IDLE
+            if (!isScrolling) {
+                pendingListUpdate?.let {
+                    dispatchListUpdate(it)
+                    pendingListUpdate = null
+                }
+            }
+        })
+
+    }
+
+    private fun dispatchListUpdate(newList: List<Currency>) {
+        val diffResult = DiffUtil.calculateDiff(ListDiffUtilCallback(currencyList, newList))
+        currencyList = newList
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {

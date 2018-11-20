@@ -7,11 +7,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.dmide.revolutassignment.R
 import com.dmide.revolutassignment.common.CurrenciesApplication
-import com.google.android.material.snackbar.Snackbar
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.dmide.revolutassignment.databinding.ActivityCurrenciesBinding
+import com.google.android.material.snackbar.Snackbar
 
 class CurrenciesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCurrenciesBinding
@@ -27,12 +27,17 @@ class CurrenciesActivity : AppCompatActivity() {
         viewModel.inject(component)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_currencies)
-        binding.postList.apply {
+        binding.currencyList.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             adapter = listAdapter
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+            addOnScrollListener(object: RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    viewModel.onNewScrollState(newState)
+                }
+            })
         }
-        
+
         binding.setLifecycleOwner(this)
         binding.viewModel = viewModel
 

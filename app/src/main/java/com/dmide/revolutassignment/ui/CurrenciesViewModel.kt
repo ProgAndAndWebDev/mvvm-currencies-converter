@@ -19,7 +19,8 @@ class CurrenciesViewModel : BaseViewModel() {
 
     val loadingVisibilityLiveData: LiveData<Int> = MutableLiveData()
     val errorMessageLiveData: LiveData<ErrorMessage> = MutableLiveData()
-    val currenciesLiveData: LiveData<List<Currency>> = MutableLiveData<List<Currency>>()
+    val currenciesLiveData: LiveData<List<Currency>> = MutableLiveData()
+    val scrollStateLiveData: LiveData<Int> = MutableLiveData()
 
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
@@ -53,6 +54,10 @@ class CurrenciesViewModel : BaseViewModel() {
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()
+    }
+
+    fun onNewScrollState(scrollState: Int) {
+        (scrollStateLiveData as MutableLiveData).value = scrollState
     }
     
     data class ErrorMessage(@StringRes val text: Int)
