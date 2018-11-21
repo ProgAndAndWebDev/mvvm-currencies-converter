@@ -19,6 +19,7 @@ class CurrenciesViewModel(private val repository: CurrencyRepository) : ViewMode
     val scrollStateLiveData: LiveData<Int> = MutableLiveData()
 
     var selectedCurrencyName: String = BASE_CURRENCY
+        private set
 
     private var portfolio: Portfolio = Portfolio(BASE_CURRENCY, 100f)
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
@@ -45,7 +46,7 @@ class CurrenciesViewModel(private val repository: CurrencyRepository) : ViewMode
                 when (status) {
                     is CurrencyRepository.Status.LoadingFinished -> {
                         (errorMessageLiveData as MutableLiveData).value = null
-                        (loadingVisibilityLiveData as MutableLiveData).value = View.GONE
+                        loadingVisibilityLiveData.value = View.GONE
                     }
                     is CurrencyRepository.Status.LoadingFailed -> {
                         Log.e(javaClass.name, "Error retrieving currencies", status.t)
