@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.common
+package com.dmide.revolutassignment.app
 
 import android.app.Application
 import com.dmide.revolutassignment.inject.component.AppComponent

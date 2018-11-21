@@ -3,7 +3,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application android:name=".common.CurrenciesApplication"
+    <application android:name=".app.CurrenciesApplication"
                  android:allowBackup="true"
                  android:label="@string/app_name"
                  android:icon="@mipmap/ic_launcher"

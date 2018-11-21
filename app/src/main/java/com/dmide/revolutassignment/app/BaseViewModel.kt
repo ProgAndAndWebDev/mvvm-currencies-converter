@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.common
+package com.dmide.revolutassignment.app
 
 import androidx.lifecycle.ViewModel
 import com.dmide.revolutassignment.inject.component.AppComponent

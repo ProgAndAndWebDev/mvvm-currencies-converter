@@ -6,7 +6,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dmide.revolutassignment.R
-import com.dmide.revolutassignment.common.BaseViewModel
+import com.dmide.revolutassignment.app.BaseViewModel
 import com.dmide.revolutassignment.model.BASE_CURRENCY
 import com.dmide.revolutassignment.model.Currency
 import com.dmide.revolutassignment.model.CurrencyRepository

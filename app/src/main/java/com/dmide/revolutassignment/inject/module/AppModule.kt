@@ -2,9 +2,8 @@ package com.dmide.revolutassignment.inject.module
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.preference.PreferenceManager
-import com.dmide.revolutassignment.common.CurrenciesApplication
+import com.dmide.revolutassignment.app.CurrenciesApplication
 import dagger.Module
 import dagger.Provides
 

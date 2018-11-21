@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.common;
+package com.dmide.revolutassignment.util;
 
 /**
  * Copyright (C) 2018 Wasabeef

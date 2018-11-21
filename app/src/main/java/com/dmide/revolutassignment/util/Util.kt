@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.common
+package com.dmide.revolutassignment.util
 
 fun Float.toShortString() : String {
     return if (this == toInt().toFloat()) { // has no decimal part

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.dmide.revolutassignment.R
-import com.dmide.revolutassignment.common.CurrenciesApplication
+import com.dmide.revolutassignment.app.CurrenciesApplication
 import com.dmide.revolutassignment.databinding.ActivityCurrenciesBinding
 import com.google.android.material.snackbar.Snackbar
 

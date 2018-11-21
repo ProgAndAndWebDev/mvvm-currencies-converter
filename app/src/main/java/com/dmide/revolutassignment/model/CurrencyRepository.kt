@@ -1,8 +1,8 @@
 package com.dmide.revolutassignment.model
 
 import android.app.Activity
-import com.dmide.revolutassignment.common.ActivityLifecycleCallbacksAdapter
-import com.dmide.revolutassignment.common.CurrenciesApplication
+import com.dmide.revolutassignment.app.ActivityLifecycleCallbacksAdapter
+import com.dmide.revolutassignment.app.CurrenciesApplication
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

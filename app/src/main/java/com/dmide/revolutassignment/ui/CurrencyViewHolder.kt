@@ -3,8 +3,8 @@ package com.dmide.revolutassignment.ui
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.dmide.revolutassignment.common.CropCircleTransformation
-import com.dmide.revolutassignment.common.toShortString
+import com.dmide.revolutassignment.util.CropCircleTransformation
+import com.dmide.revolutassignment.util.toShortString
 import com.dmide.revolutassignment.databinding.ListItemBinding
 import com.dmide.revolutassignment.model.Currency
 import com.jakewharton.rxbinding2.widget.RxTextView
