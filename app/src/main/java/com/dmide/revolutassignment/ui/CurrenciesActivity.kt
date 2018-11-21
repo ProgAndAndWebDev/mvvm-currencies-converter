@@ -35,10 +35,9 @@ class CurrenciesActivity : AppCompatActivity() {
             adapter = listAdapter
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             addOnScrollListener(object: RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    viewModel.onNewScrollState(newState)
-                }
+                override fun onScrollStateChanged(rv: RecyclerView, state: Int) = viewModel.onNewScrollState(state)
             })
+            viewModel.onNewScrollState(RecyclerView.SCROLL_STATE_IDLE)
         }
 
         binding.setLifecycleOwner(this)

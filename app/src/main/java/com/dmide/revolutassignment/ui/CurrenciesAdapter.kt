@@ -9,35 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dmide.revolutassignment.R
 import com.dmide.revolutassignment.databinding.ListItemBinding
 import com.dmide.revolutassignment.model.Currency
+import com.dmide.revolutassignment.util.withLatestFrom
 
-class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, private val currenciesViewModel: CurrenciesViewModel) :
+class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, private val viewModel: CurrenciesViewModel) :
     RecyclerView.Adapter<CurrencyViewHolder>() {
 
     private var currencyList: List<Currency> = listOf()
-    private var pendingListUpdate: List<Currency>? = null
-    private var isScrolling: Boolean = false
 
     init {
-        currenciesViewModel.currenciesLiveData.observe(currenciesActivity, Observer { newList ->
-            if (isScrolling) {
-                // This is more verbose than for example 'filter {!isScrolling}'
-                // but preserves the pending value in case of connection lost.
-                // Although there should be the way to do it using RX, I can't come up with a simple one.
-                pendingListUpdate = newList
-                return@Observer
+        viewModel.currenciesLiveData
+            .withLatestFrom(viewModel.scrollStateLiveData) { currencies, scrollState ->
+                Pair(currencies, scrollState)
             }
-            dispatchListUpdate(newList)
-        })
-
-        currenciesViewModel.scrollStateLiveData.observe(currenciesActivity, Observer { scrollState ->
-            isScrolling = scrollState != RecyclerView.SCROLL_STATE_IDLE
-            if (!isScrolling) {
-                pendingListUpdate?.let {
-                    dispatchListUpdate(it)
-                    pendingListUpdate = null
-                }
-            }
-        })
+            .observe(currenciesActivity, Observer { pair ->
+                if (pair.second == RecyclerView.SCROLL_STATE_IDLE) dispatchListUpdate(pair.first)
+            })
     }
 
     private fun dispatchListUpdate(newList: List<Currency>) {
@@ -51,7 +37,7 @@ class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, private val curr
         val binding: ListItemBinding =
             DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.list_item, parent, false)
 
-        return CurrencyViewHolder(binding, currenciesViewModel)
+        return CurrencyViewHolder(binding, viewModel)
     }
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
