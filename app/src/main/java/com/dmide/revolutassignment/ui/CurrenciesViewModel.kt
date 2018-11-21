@@ -27,9 +27,11 @@ class CurrenciesViewModel : BaseViewModel() {
     private var portfolio: Portfolio = Portfolio(BASE_CURRENCY, 100f)
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    override fun onCreated() {
+    init {
         (loadingVisibilityLiveData as MutableLiveData).value = View.VISIBLE
+    }
 
+    override fun onInjected() {
         val currenciesDisposable = repository.currencyList
             .subscribe { pair ->
                 val newBaseCurrencyName = pair.first
@@ -49,7 +51,7 @@ class CurrenciesViewModel : BaseViewModel() {
                 when (status) {
                     is CurrencyRepository.Status.LoadingFinished -> {
                         (errorMessageLiveData as MutableLiveData).value = null
-                        loadingVisibilityLiveData.value = View.GONE
+                        (loadingVisibilityLiveData as MutableLiveData).value = View.GONE
                     }
                     is CurrencyRepository.Status.LoadingFailed -> {
                         Log.e(javaClass.name, "Error retrieving currencies", status.t)

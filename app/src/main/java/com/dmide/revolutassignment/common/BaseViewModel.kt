@@ -10,8 +10,8 @@ abstract class BaseViewModel() : ViewModel() {
         when (this) {
             is CurrenciesViewModel -> component.inject(this)
         }
-        onCreated()
+        onInjected()
     }
 
-    abstract fun onCreated()
+    abstract fun onInjected()
 }
