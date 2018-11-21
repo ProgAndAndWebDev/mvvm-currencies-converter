@@ -3,9 +3,11 @@ package com.dmide.revolutassignment.model
 import android.app.Activity
 import com.dmide.revolutassignment.app.ActivityLifecycleCallbacksAdapter
 import com.dmide.revolutassignment.app.CurrenciesApplication
+import com.dmide.revolutassignment.util.withLatestFrom
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -18,11 +20,13 @@ class CurrencyRepository @Inject constructor(application: CurrenciesApplication,
 
     val currencyList: PublishSubject<Pair<String, List<Currency>>> = PublishSubject.create()
     val status: BehaviorSubject<Status> = BehaviorSubject.create()
+    private val baseCurrencyName: BehaviorSubject<String> = BehaviorSubject.create()
 
-    private var baseCurrencyName: String = BASE_CURRENCY
     private var disposable: Disposable? = null
 
     init {
+        baseCurrencyName.onNext(BASE_CURRENCY)
+
         application.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacksAdapter() {
             override fun onActivityResumed(p0: Activity?) {
                 disposable = createCurrenciesObservable()
@@ -37,14 +41,15 @@ class CurrencyRepository @Inject constructor(application: CurrenciesApplication,
         })
     }
 
-    fun changeBaseCurrency(baseCurrencyName: String) {
-        this.baseCurrencyName = baseCurrencyName
+    fun changeBaseCurrency(name: String) {
+        baseCurrencyName.onNext(name)
     }
 
     private fun createCurrenciesObservable(): Observable<Pair<String, List<Currency>>> {
         return Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
             .startWith(0)
-            .flatMap { currencyApi.getLatest(baseCurrencyName) }
+            .withLatestFrom(baseCurrencyName) { _, name -> name}
+            .flatMap { baseCurrencyName -> currencyApi.getLatest(baseCurrencyName) }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError { e -> status.onNext(Status.LoadingFailed(e)) }
             .retry()
