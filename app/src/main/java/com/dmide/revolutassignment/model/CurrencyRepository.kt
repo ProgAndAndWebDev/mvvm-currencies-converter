@@ -15,15 +15,19 @@ import javax.inject.Singleton
 @Singleton
 class CurrencyRepository @Inject constructor(application: CurrenciesApplication, private val currencyApi: CurrencyApi) {
 
-    val currencyList: PublishSubject<List<Currency>> = PublishSubject.create()
+    val currencyList: PublishSubject<Pair<String, List<Currency>>> = PublishSubject.create()
     val status: PublishSubject<Status> = PublishSubject.create()
+
+    private var baseCurrencyName: String = BASE_CURRENCY
     private var disposable: Disposable? = null
 
     init {
         application.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacksAdapter() {
             override fun onActivityResumed(p0: Activity?) {
                 disposable = createCurrenciesObservable()
-                    .subscribe { currencyList.onNext(it) }
+                    .subscribe {
+                        currencyList.onNext(Pair(baseCurrencyName, it))
+                    }
             }
 
             override fun onActivityPaused(p0: Activity?) {
@@ -32,10 +36,14 @@ class CurrencyRepository @Inject constructor(application: CurrenciesApplication,
         })
     }
 
+    fun changeBaseCurrency(baseCurrencyName: String) {
+        this.baseCurrencyName = baseCurrencyName
+    }
+
     private fun createCurrenciesObservable(): Observable<List<Currency>> {
         return Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
             .startWith(0)
-            .flatMap { currencyApi.getLatest() }
+            .flatMap { currencyApi.getLatest(baseCurrencyName) }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError { e -> status.onNext(Status.LoadingFailed(e)) }
             .retry()
@@ -43,8 +51,9 @@ class CurrencyRepository @Inject constructor(application: CurrenciesApplication,
             .doOnNext { status.onNext(Status.LoadingFinished) }
             .map { response ->
                 response.rates
-                    .map { Currency(it.key, response.base, it.value) }
-                    .toList()
+                    .map { Currency(it.key, it.value, baseCurrencyName) }
+                    .toMutableList()
+                    .apply { add(0, Currency(baseCurrencyName, 1f, baseCurrencyName)) }
             }
     }
 

@@ -10,7 +10,7 @@ import com.dmide.revolutassignment.R
 import com.dmide.revolutassignment.databinding.ListItemBinding
 import com.dmide.revolutassignment.model.Currency
 
-class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, currenciesViewModel: CurrenciesViewModel) :
+class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, private val currenciesViewModel: CurrenciesViewModel) :
     RecyclerView.Adapter<CurrencyViewHolder>() {
 
     private var currencyList: List<Currency> = listOf()
@@ -20,7 +20,7 @@ class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, currenciesViewMo
     init {
         currenciesViewModel.currenciesLiveData.observe(currenciesActivity, Observer { newList ->
             if (isScrolling) {
-                // This is more verbose than for example 'skipWhile {isScrolling}'
+                // This is more verbose than for example 'filter {!isScrolling}'
                 // but preserves the pending value in case of connection lost.
                 // Although there should be the way to do it using RX, I can't come up with a simple one.
                 pendingListUpdate = newList
@@ -38,12 +38,11 @@ class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, currenciesViewMo
                 }
             }
         })
-
     }
 
     private fun dispatchListUpdate(newList: List<Currency>) {
         // the list is small enough to have an update time way under 16ms (1-2ms on Nexus 5X), so no need for async version
-        val diffResult = DiffUtil.calculateDiff(ListDiffUtilCallback(currencyList, newList))
+        val diffResult = DiffUtil.calculateDiff(ListDiffUtilCallback(newList, currencyList))
         currencyList = newList
         diffResult.dispatchUpdatesTo(this)
     }
@@ -51,7 +50,8 @@ class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, currenciesViewMo
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         val binding: ListItemBinding =
             DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.list_item, parent, false)
-        return CurrencyViewHolder(binding)
+
+        return CurrencyViewHolder(binding, currenciesViewModel)
     }
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
@@ -77,7 +77,7 @@ class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, currenciesViewMo
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].rate == newList[newItemPosition].rate
+            return oldList[oldItemPosition].value == newList[newItemPosition].value
         }
     }
 }

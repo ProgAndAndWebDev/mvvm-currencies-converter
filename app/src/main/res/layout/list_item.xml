@@ -39,19 +39,20 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:textSize="18sp"
-                    android:text="@{viewHolder.name}"
+                    android:text="@{viewHolder.nameLiveData}"
                     android:textStyle="bold"
                     tools:text="name"
                     app:layout_constraintStart_toEndOf="@+id/icon"
                     app:layout_constraintTop_toTopOf="parent"/>
 
             <EditText
-                    android:id="@+id/rate"
+                    android:id="@+id/value"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:singleLine="true"
-                    android:text="@{viewHolder.rate}"
+                    android:text="@{viewHolder.valueLiveData}"
+                    android:inputType="numberDecimal"
                     tools:text="rate"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
