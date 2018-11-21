@@ -27,7 +27,7 @@ class CurrencyRepository @Inject constructor(application: CurrenciesApplication,
             override fun onActivityResumed(p0: Activity?) {
                 disposable = createCurrenciesObservable()
                     .subscribe {
-                        currencyList.onNext(Pair(baseCurrencyName, it))
+                        currencyList.onNext(it)
                     }
             }
 
@@ -41,7 +41,7 @@ class CurrencyRepository @Inject constructor(application: CurrenciesApplication,
         this.baseCurrencyName = baseCurrencyName
     }
 
-    private fun createCurrenciesObservable(): Observable<List<Currency>> {
+    private fun createCurrenciesObservable(): Observable<Pair<String, List<Currency>>> {
         return Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
             .startWith(0)
             .flatMap { currencyApi.getLatest(baseCurrencyName) }
@@ -51,10 +51,11 @@ class CurrencyRepository @Inject constructor(application: CurrenciesApplication,
             .doOnSubscribe { status.onNext(Status.LoadingStarted) }
             .doOnNext { status.onNext(Status.LoadingFinished) }
             .map { response ->
-                response.rates
-                    .map { Currency(it.key, it.value, baseCurrencyName) }
+                val currencies = response.rates
+                    .map { Currency(it.key, it.value, response.base) }
                     .toMutableList()
-                    .apply { add(0, Currency(baseCurrencyName, 1f, baseCurrencyName)) }
+                    .apply { add(0, Currency(response.base, 1f, response.base)) }
+                Pair(response.base, currencies)
             }
     }
 
