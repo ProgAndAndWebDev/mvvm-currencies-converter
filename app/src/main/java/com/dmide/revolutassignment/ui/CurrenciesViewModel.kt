@@ -5,18 +5,14 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.dmide.revolutassignment.R
-import com.dmide.revolutassignment.app.BaseViewModel
 import com.dmide.revolutassignment.model.BASE_CURRENCY
 import com.dmide.revolutassignment.model.Currency
 import com.dmide.revolutassignment.model.CurrencyRepository
 import io.reactivex.disposables.CompositeDisposable
-import javax.inject.Inject
 
-class CurrenciesViewModel : BaseViewModel() {
-    @Inject
-    lateinit var repository: CurrencyRepository
-
+class CurrenciesViewModel(private val repository: CurrencyRepository) : ViewModel() {
     val loadingVisibilityLiveData: LiveData<Int> = MutableLiveData()
     val errorMessageLiveData: LiveData<ErrorMessage> = MutableLiveData()
     val currenciesLiveData: CurrenciesLiveData = CurrenciesLiveData()
@@ -29,9 +25,7 @@ class CurrenciesViewModel : BaseViewModel() {
 
     init {
         (loadingVisibilityLiveData as MutableLiveData).value = View.VISIBLE
-    }
 
-    override fun onInjected() {
         val currenciesDisposable = repository.currencyList
             .subscribe { pair ->
                 val newBaseCurrencyName = pair.first

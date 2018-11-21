@@ -12,8 +12,12 @@ import com.dmide.revolutassignment.R
 import com.dmide.revolutassignment.app.CurrenciesApplication
 import com.dmide.revolutassignment.databinding.ActivityCurrenciesBinding
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
 class CurrenciesActivity : AppCompatActivity() {
+    @Inject
+    lateinit var currenciesViewModelFactory: CurrenciesViewModelFactory
+
     private lateinit var binding: ActivityCurrenciesBinding
     private lateinit var viewModel: CurrenciesViewModel
     private val listAdapter by lazy { CurrenciesAdapter(this, viewModel) }
@@ -22,9 +26,8 @@ class CurrenciesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val component = (application as CurrenciesApplication).component
-        viewModel = ViewModelProviders.of(this).get(CurrenciesViewModel::class.java)
-        viewModel.inject(component)
+        (application as CurrenciesApplication).component.inject(this)
+        viewModel = ViewModelProviders.of(this, currenciesViewModelFactory).get(CurrenciesViewModel::class.java)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_currencies)
         binding.currencyList.apply {
