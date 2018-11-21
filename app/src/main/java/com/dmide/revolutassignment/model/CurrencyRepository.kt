@@ -7,6 +7,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -16,7 +17,7 @@ import javax.inject.Singleton
 class CurrencyRepository @Inject constructor(application: CurrenciesApplication, private val currencyApi: CurrencyApi) {
 
     val currencyList: PublishSubject<Pair<String, List<Currency>>> = PublishSubject.create()
-    val status: PublishSubject<Status> = PublishSubject.create()
+    val status: BehaviorSubject<Status> = BehaviorSubject.create()
 
     private var baseCurrencyName: String = BASE_CURRENCY
     private var disposable: Disposable? = null
