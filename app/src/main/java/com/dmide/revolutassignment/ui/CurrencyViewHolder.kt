@@ -3,13 +3,14 @@ package com.dmide.revolutassignment.ui
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.dmide.revolutassignment.util.CropCircleTransformation
-import com.dmide.revolutassignment.util.toShortString
 import com.dmide.revolutassignment.databinding.ListItemBinding
 import com.dmide.revolutassignment.model.Currency
-import com.dmide.revolutassignment.util.showKeyboard
+import com.dmide.revolutassignment.util.*
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.squareup.picasso.Picasso
+
+private const val defaultPrecision = 2
+private var selectedCurrencyDisplayedPrecision: Int? = 2
 
 class CurrencyViewHolder(val binding: ListItemBinding, private val currenciesViewModel: CurrenciesViewModel) :
     RecyclerView.ViewHolder(binding.root) {
@@ -28,9 +29,10 @@ class CurrencyViewHolder(val binding: ListItemBinding, private val currenciesVie
         nameLiveData.value = currency.name
 
         if (currency.name != currenciesViewModel.selectedCurrencyName) {
-            valueLiveData.value = "%.2f".format(currency.value)
+            valueLiveData.value = "%.${defaultPrecision}f".format(currency.value)
         } else if (!binding.value.hasFocus()) {
-            valueLiveData.value = currency.value.toShortString()
+            val newValue = currency.value.toShortString(selectedCurrencyDisplayedPrecision)
+            valueLiveData.setIfDiffers(newValue)
         }
 
         binding.layout.setOnClickListener {
@@ -40,7 +42,12 @@ class CurrencyViewHolder(val binding: ListItemBinding, private val currenciesVie
                 context.showKeyboard()
             }
         }
-        binding.value.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) currenciesViewModel.onCurrencySelected(currency) }
+        binding.value.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                selectedCurrencyDisplayedPrecision = defaultPrecision
+                currenciesViewModel.onCurrencySelected(currency)
+            }
+        }
 
         Picasso.get().load("file:///android_asset/icons_currency/${currency.name.toLowerCase()}.png")
             .transform(CropCircleTransformation())
@@ -58,10 +65,14 @@ class CurrencyViewHolder(val binding: ListItemBinding, private val currenciesVie
             .filter { binding.value.hasFocus() } // pass changes only from the currently edited view
             .filter { it.toString().toFloatOrNull() != currency?.value } // filter identical values
             .subscribe { text ->
-                valueLiveData.value = text.toString()
-                text.toString().toFloatOrNull().let { value ->
+                val stringValue = text.toString()
+                selectedCurrencyDisplayedPrecision = stringValue.numberOfDecimals()
+                valueLiveData.value = stringValue
+                stringValue.toFloatOrNull().let { value ->
+                    val newValue = value ?: 0f
                     currency?.let { c ->
-                        val newBaseValue = (value ?: 0f) / c.rate
+                        c.value = newValue
+                        val newBaseValue = newValue / c.rate
                         currenciesViewModel.onAmountUpdated(newBaseValue)
                     }
                 }
