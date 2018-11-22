@@ -21,21 +21,22 @@ class CurrenciesViewModel(private val repository: CurrencyRepository) : ViewMode
     var selectedCurrencyName: String = BASE_CURRENCY
         private set
 
+    // for correct exchange result when changing the base currency
+    private val baseCurrencyRateSnapshots: MutableMap<String,Float> = mutableMapOf()
     private var portfolio: Portfolio = Portfolio(BASE_CURRENCY, 100f)
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     init {
         (loadingVisibilityLiveData as MutableLiveData).value = View.VISIBLE
 
-        val currenciesDisposable = repository.currencyList
+        val currenciesDisposable = repository.currency
             .subscribe { pair ->
                 val newBaseCurrencyName = pair.first
                 val currencies = pair.second
 
                 if (newBaseCurrencyName != portfolio.currencyName) {
-                    // '!!' is intended. oldBaseCurrency should be found, otherwise fail fast
-                    val oldBaseCurrency: Currency = currencies.find { it.name == portfolio.currencyName }!!
-                    portfolio = Portfolio(newBaseCurrencyName, portfolio.amount / oldBaseCurrency.rate)
+                    val rateSnapshot = baseCurrencyRateSnapshots[newBaseCurrencyName]!! // should be present
+                    portfolio = Portfolio(newBaseCurrencyName, portfolio.amount * rateSnapshot)
                 }
 
                 currenciesLiveData.update(currencies)
@@ -69,6 +70,7 @@ class CurrenciesViewModel(private val repository: CurrencyRepository) : ViewMode
 
     fun onCurrencySelected(currency: Currency) {
         selectedCurrencyName = currency.name
+        baseCurrencyRateSnapshots[currency.name] = currency.rate
         currenciesLiveData.update()
         repository.changeBaseCurrency(currency.name)
     }

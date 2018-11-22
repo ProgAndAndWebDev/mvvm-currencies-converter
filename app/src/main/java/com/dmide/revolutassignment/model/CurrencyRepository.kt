@@ -7,7 +7,6 @@ import com.dmide.revolutassignment.util.withLatestFrom
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
@@ -18,7 +17,7 @@ import javax.inject.Singleton
 @Singleton
 class CurrencyRepository @Inject constructor(application: CurrenciesApplication, private val currencyApi: CurrencyApi) {
 
-    val currencyList: PublishSubject<Pair<String, List<Currency>>> = PublishSubject.create()
+    val currency: PublishSubject<Pair<String, List<Currency>>> = PublishSubject.create()
     val status: BehaviorSubject<Status> = BehaviorSubject.create()
     private val baseCurrencyName: BehaviorSubject<String> = BehaviorSubject.create()
 
@@ -31,7 +30,7 @@ class CurrencyRepository @Inject constructor(application: CurrenciesApplication,
             override fun onActivityResumed(p0: Activity?) {
                 disposable = createCurrenciesObservable()
                     .subscribe {
-                        currencyList.onNext(it)
+                        currency.onNext(it)
                     }
             }
 

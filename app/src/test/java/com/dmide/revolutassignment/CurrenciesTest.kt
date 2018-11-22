@@ -22,7 +22,7 @@ class CurrenciesTest {
     @Test
     fun baseCurrencyUpdatePropagation() {
         val repository = Mockito.mock(CurrencyRepository::class.java)
-        Mockito.`when`(repository.currencyList).thenReturn(PublishSubject.create())
+        Mockito.`when`(repository.currency).thenReturn(PublishSubject.create())
         Mockito.`when`(repository.status).thenReturn(BehaviorSubject.create())
 
         val currenciesViewModelFactory = CurrenciesViewModelFactory(repository)
