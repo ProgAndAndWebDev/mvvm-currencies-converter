@@ -9,17 +9,19 @@
                 type="com.dmide.revolutassignment.ui.CurrencyViewHolder"/>
     </data>
 
+    <!-- focusableInTouchMode is here to prevent EditText from autofocus -->
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp">
 
-        <!-- focusableInTouchMode is here to prevent EditText from autofocus -->
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:focusableInTouchMode="true"
+                android:id="@+id/layout"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -32,7 +34,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
-            
+
             <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
@@ -57,7 +59,7 @@
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
-            
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

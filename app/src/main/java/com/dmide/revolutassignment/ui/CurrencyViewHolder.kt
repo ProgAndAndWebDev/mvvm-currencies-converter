@@ -32,6 +32,12 @@ class CurrencyViewHolder(val binding: ListItemBinding, private val currenciesVie
             valueLiveData.value = currency.value.toShortString()
         }
 
+        binding.layout.setOnClickListener {
+            binding.value.apply {
+                requestFocus()
+                setSelection(text.length)
+            }
+        }
         binding.value.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) currenciesViewModel.onCurrencySelected(currency) }
 
         Picasso.get().load("file:///android_asset/icons_currency/${currency.name.toLowerCase()}.png")
