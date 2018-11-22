@@ -1,10 +1,13 @@
 package com.dmide.revolutassignment.util
 
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.functions.BiFunction
+
 
 fun Float.toShortString() : String {
     return if (this == toInt().toFloat()) { // has no decimal part
@@ -41,4 +44,9 @@ fun <T, A, B> LiveData<A>.withLatestFrom(other: LiveData<B>, onChange: (A, B) ->
     result.addSource(other) { source2emitted = true; mergeF.invoke() }
 
     return result
+}
+
+fun Context.showKeyboard() {
+    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
 }

@@ -7,6 +7,7 @@ import com.dmide.revolutassignment.util.CropCircleTransformation
 import com.dmide.revolutassignment.util.toShortString
 import com.dmide.revolutassignment.databinding.ListItemBinding
 import com.dmide.revolutassignment.model.Currency
+import com.dmide.revolutassignment.util.showKeyboard
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.squareup.picasso.Picasso
 
@@ -36,6 +37,7 @@ class CurrencyViewHolder(val binding: ListItemBinding, private val currenciesVie
             binding.value.apply {
                 requestFocus()
                 setSelection(text.length)
+                context.showKeyboard()
             }
         }
         binding.value.setOnFocusChangeListener { _, hasFocus -> if (hasFocus) currenciesViewModel.onCurrencySelected(currency) }
