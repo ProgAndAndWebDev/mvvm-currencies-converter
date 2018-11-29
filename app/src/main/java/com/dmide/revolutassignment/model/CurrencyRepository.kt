@@ -1,8 +1,8 @@
 package com.dmide.revolutassignment.model
 
-import android.app.Activity
-import com.dmide.revolutassignment.app.ActivityLifecycleCallbacksAdapter
-import com.dmide.revolutassignment.app.CurrenciesApplication
+import android.annotation.SuppressLint
+import com.dmide.revolutassignment.app.LifecycleObserver
+import com.dmide.revolutassignment.app.LifecycleObserver.Event.*
 import com.dmide.revolutassignment.util.withLatestFrom
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +15,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class CurrencyRepository @Inject constructor(application: CurrenciesApplication, private val currencyApi: CurrencyApi) {
+class CurrencyRepository @Inject constructor(
+    private val lifecycleObserver: LifecycleObserver,
+    private val currencyApi: CurrencyApi
+) {
 
     val currency: PublishSubject<Pair<String, List<Currency>>> = PublishSubject.create()
     val status: BehaviorSubject<Status> = BehaviorSubject.create()
@@ -25,29 +28,32 @@ class CurrencyRepository @Inject constructor(application: CurrenciesApplication,
 
     init {
         baseCurrencyName.onNext(BASE_CURRENCY)
-
-        application.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacksAdapter() {
-            override fun onActivityResumed(p0: Activity?) {
-                disposable = createCurrenciesObservable()
-                    .subscribe {
-                        currency.onNext(it)
-                    }
-            }
-
-            override fun onActivityPaused(p0: Activity?) {
-                disposable?.dispose()
-            }
-        })
+        setupLifecycleObserver()
     }
 
     fun changeBaseCurrency(name: String) {
         baseCurrencyName.onNext(name)
     }
 
+    @SuppressLint("CheckResult") // don't need to dispose since repository is application-scope singleton
+    private fun setupLifecycleObserver() {
+        lifecycleObserver.lifecycleSubject.subscribe { event ->
+            when (event) {
+                Resume -> {
+                    disposable = createCurrenciesObservable()
+                        .subscribe {
+                            currency.onNext(it)
+                        }
+                }
+                Pause -> disposable?.dispose()
+            }
+        }
+    }
+
     private fun createCurrenciesObservable(): Observable<Pair<String, List<Currency>>> {
         return Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
             .startWith(0)
-            .withLatestFrom(baseCurrencyName) { _, name -> name}
+            .withLatestFrom(baseCurrencyName) { _, name -> name }
             .flatMap { baseCurrencyName -> currencyApi.getLatest(baseCurrencyName) }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError { e -> status.onNext(Status.LoadingFailed(e)) }
