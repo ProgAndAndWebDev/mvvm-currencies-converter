@@ -3,30 +3,17 @@ package com.dmide.revolutassignment.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dmide.revolutassignment.R
 import com.dmide.revolutassignment.databinding.ListItemBinding
 import com.dmide.revolutassignment.model.Currency
-import com.dmide.revolutassignment.util.withLatestFrom
 
-class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, private val viewModel: CurrenciesViewModel) :
-    RecyclerView.Adapter<CurrencyViewHolder>() {
+class CurrenciesAdapter() : RecyclerView.Adapter<CurrencyViewHolder>() {
 
     private var currencyList: List<Currency> = listOf()
 
-    init {
-        viewModel.currenciesLiveData
-            .withLatestFrom(viewModel.scrollStateLiveData) { currencies, scrollState ->
-                Pair(currencies, scrollState)
-            }
-            .observe(currenciesActivity, Observer { pair ->
-                if (pair.second == RecyclerView.SCROLL_STATE_IDLE) dispatchListUpdate(pair.first)
-            })
-    }
-
-    private fun dispatchListUpdate(newList: List<Currency>) {
+    fun dispatchListUpdate(newList: List<Currency>) {
         // the list is small enough to have an update time way under 16ms (1-2ms on Nexus 5X), so no need for async version
         val diffResult = DiffUtil.calculateDiff(ListDiffUtilCallback(newList, currencyList))
         currencyList = newList
@@ -37,7 +24,7 @@ class CurrenciesAdapter(currenciesActivity: CurrenciesActivity, private val view
         val binding: ListItemBinding =
             DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.list_item, parent, false)
 
-        return CurrencyViewHolder(binding, viewModel)
+        return CurrencyViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {

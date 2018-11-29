@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.dmide.revolutassignment.R
 import com.dmide.revolutassignment.app.CurrenciesApplication
 import com.dmide.revolutassignment.databinding.ActivityCurrenciesBinding
+import com.dmide.revolutassignment.util.withLatestFrom
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -19,8 +20,9 @@ class CurrenciesActivity : AppCompatActivity() {
     lateinit var currenciesViewModelFactory: CurrenciesViewModelFactory
 
     private lateinit var binding: ActivityCurrenciesBinding
-    private lateinit var viewModel: CurrenciesViewModel
-    private val listAdapter by lazy { CurrenciesAdapter(this, viewModel) }
+    lateinit var viewModel: CurrenciesViewModel
+        private set
+    private val listAdapter = CurrenciesAdapter()
     private var snackbar: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +36,7 @@ class CurrenciesActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             adapter = listAdapter
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-            addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(rv: RecyclerView, state: Int) = viewModel.onNewScrollState(state)
             })
             viewModel.onNewScrollState(RecyclerView.SCROLL_STATE_IDLE)
@@ -46,11 +48,19 @@ class CurrenciesActivity : AppCompatActivity() {
         viewModel.errorMessageLiveData.observe(this, Observer { message ->
             if (message != null) showErrorSnack(message) else hideErrorSnack()
         })
+
+        viewModel.currenciesLiveData
+            .withLatestFrom(viewModel.scrollStateLiveData) { currencies, scrollState ->
+                Pair(currencies, scrollState)
+            }
+            .observe(this, Observer { pair ->
+                if (pair.second == RecyclerView.SCROLL_STATE_IDLE) listAdapter.dispatchListUpdate(pair.first)
+            })
     }
 
     private fun showErrorSnack(message: CurrenciesViewModel.ErrorMessage) {
         if (snackbar != null) return
-        
+
         snackbar = Snackbar.make(binding.root, message.text, Snackbar.LENGTH_INDEFINITE)
             .apply { show() }
     }

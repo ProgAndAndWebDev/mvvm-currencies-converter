@@ -12,11 +12,11 @@ import com.squareup.picasso.Picasso
 private const val defaultPrecision = 2
 private var selectedCurrencyDisplayedPrecision: Int? = 2
 
-class CurrencyViewHolder(val binding: ListItemBinding, private val currenciesViewModel: CurrenciesViewModel) :
-    RecyclerView.ViewHolder(binding.root) {
+class CurrencyViewHolder(val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
     val nameLiveData = MutableLiveData<String>()
     val valueLiveData = MutableLiveData<String>()
+    private val currenciesViewModel = (binding.root.context as CurrenciesActivity).viewModel
 
     private var currency: Currency? = null
 
