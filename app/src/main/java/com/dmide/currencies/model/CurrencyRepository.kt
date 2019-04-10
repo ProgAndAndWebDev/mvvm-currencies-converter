@@ -1,9 +1,9 @@
-package com.dmide.revolutassignment.model
+package com.dmide.currencies.model
 
 import android.annotation.SuppressLint
-import com.dmide.revolutassignment.app.LifecycleObserver
-import com.dmide.revolutassignment.app.LifecycleObserver.Event.*
-import com.dmide.revolutassignment.util.withLatestFrom
+import com.dmide.currencies.app.LifecycleObserver
+import com.dmide.currencies.app.LifecycleObserver.Event.*
+import com.dmide.currencies.util.withLatestFrom
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

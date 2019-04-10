@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.util;
+package com.dmide.currencies.util;
 
 /**
  * Copyright (C) 2018 Wasabeef

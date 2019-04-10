@@ -1,11 +1,11 @@
-package com.dmide.revolutassignment.app
+package com.dmide.currencies.app
 
 import android.app.Application
 import android.util.Log
-import com.dmide.revolutassignment.inject.component.AppComponent
-import com.dmide.revolutassignment.inject.component.DaggerAppComponent
-import com.dmide.revolutassignment.inject.module.AppModule
-import com.dmide.revolutassignment.inject.module.NetworkModule
+import com.dmide.currencies.inject.component.AppComponent
+import com.dmide.currencies.inject.component.DaggerAppComponent
+import com.dmide.currencies.inject.module.AppModule
+import com.dmide.currencies.inject.module.NetworkModule
 import io.reactivex.plugins.RxJavaPlugins
 
 class CurrenciesApplication : Application() {

@@ -1,8 +1,8 @@
-package com.dmide.revolutassignment.inject.component
+package com.dmide.currencies.inject.component
 
-import com.dmide.revolutassignment.inject.module.AppModule
-import com.dmide.revolutassignment.inject.module.NetworkModule
-import com.dmide.revolutassignment.ui.CurrenciesActivity
+import com.dmide.currencies.inject.module.AppModule
+import com.dmide.currencies.inject.module.NetworkModule
+import com.dmide.currencies.ui.CurrenciesActivity
 import dagger.Component
 import javax.inject.Singleton
 

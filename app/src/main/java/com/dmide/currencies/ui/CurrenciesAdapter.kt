@@ -1,13 +1,13 @@
-package com.dmide.revolutassignment.ui
+package com.dmide.currencies.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.dmide.revolutassignment.R
-import com.dmide.revolutassignment.databinding.ListItemBinding
-import com.dmide.revolutassignment.model.Currency
+import com.dmide.currencies.R
+import com.dmide.currencies.databinding.ListItemBinding
+import com.dmide.currencies.model.Currency
 
 class CurrenciesAdapter() : RecyclerView.Adapter<CurrencyViewHolder>() {
 

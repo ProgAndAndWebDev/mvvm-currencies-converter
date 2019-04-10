@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.util
+package com.dmide.currencies.util
 
 import android.content.Context
 import android.view.inputmethod.InputMethodManager

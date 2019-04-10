@@ -1,8 +1,8 @@
-package com.dmide.revolutassignment.ui
+package com.dmide.currencies.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dmide.revolutassignment.model.CurrencyRepository
+import com.dmide.currencies.model.CurrencyRepository
 import javax.inject.Inject
 
 class CurrenciesViewModelFactory @Inject constructor(val repository: CurrencyRepository) : ViewModelProvider.Factory {

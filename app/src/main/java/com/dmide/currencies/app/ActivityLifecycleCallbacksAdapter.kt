@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.app
+package com.dmide.currencies.app
 
 import android.app.Activity
 import android.app.Application

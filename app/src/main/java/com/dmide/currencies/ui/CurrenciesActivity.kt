@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.ui
+package com.dmide.currencies.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.dmide.revolutassignment.R
-import com.dmide.revolutassignment.app.CurrenciesApplication
-import com.dmide.revolutassignment.databinding.ActivityCurrenciesBinding
-import com.dmide.revolutassignment.util.withLatestFrom
+import com.dmide.currencies.R
+import com.dmide.currencies.app.CurrenciesApplication
+import com.dmide.currencies.databinding.ActivityCurrenciesBinding
+import com.dmide.currencies.util.withLatestFrom
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 

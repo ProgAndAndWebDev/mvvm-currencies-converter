@@ -1,7 +1,7 @@
-package com.dmide.revolutassignment
+package com.dmide.currencies
 
-import com.dmide.revolutassignment.util.numberOfDecimals
-import com.dmide.revolutassignment.util.toShortString
+import com.dmide.currencies.util.numberOfDecimals
+import com.dmide.currencies.util.toShortString
 import org.junit.Test
 
 class UtilTest {

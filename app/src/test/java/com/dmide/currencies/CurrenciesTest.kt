@@ -1,10 +1,10 @@
-package com.dmide.revolutassignment
+package com.dmide.currencies
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.dmide.revolutassignment.model.Currency
-import com.dmide.revolutassignment.model.CurrencyRepository
-import com.dmide.revolutassignment.ui.CurrenciesViewModel
-import com.dmide.revolutassignment.ui.CurrenciesViewModelFactory
+import com.dmide.currencies.model.Currency
+import com.dmide.currencies.model.CurrencyRepository
+import com.dmide.currencies.ui.CurrenciesViewModel
+import com.dmide.currencies.ui.CurrenciesViewModelFactory
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import org.junit.Rule

@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.model
+package com.dmide.currencies.model
 
 import io.reactivex.Observable
 import retrofit2.http.GET

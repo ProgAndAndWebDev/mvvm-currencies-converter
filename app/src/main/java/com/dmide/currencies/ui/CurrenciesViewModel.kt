@@ -1,4 +1,4 @@
-package com.dmide.revolutassignment.ui
+package com.dmide.currencies.ui
 
 import android.util.Log
 import android.view.View
@@ -6,10 +6,10 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dmide.revolutassignment.R
-import com.dmide.revolutassignment.model.BASE_CURRENCY
-import com.dmide.revolutassignment.model.Currency
-import com.dmide.revolutassignment.model.CurrencyRepository
+import com.dmide.currencies.R
+import com.dmide.currencies.model.BASE_CURRENCY
+import com.dmide.currencies.model.Currency
+import com.dmide.currencies.model.CurrencyRepository
 import io.reactivex.disposables.CompositeDisposable
 
 class CurrenciesViewModel(private val repository: CurrencyRepository) : ViewModel() {

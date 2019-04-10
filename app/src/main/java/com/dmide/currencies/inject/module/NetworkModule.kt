@@ -1,6 +1,6 @@
-package com.dmide.revolutassignment.inject.module
+package com.dmide.currencies.inject.module
 
-import com.dmide.revolutassignment.model.CurrencyApi
+import com.dmide.currencies.model.CurrencyApi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable

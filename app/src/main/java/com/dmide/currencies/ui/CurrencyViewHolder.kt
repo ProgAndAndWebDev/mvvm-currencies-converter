@@ -1,11 +1,11 @@
-package com.dmide.revolutassignment.ui
+package com.dmide.currencies.ui
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.dmide.revolutassignment.databinding.ListItemBinding
-import com.dmide.revolutassignment.model.Currency
-import com.dmide.revolutassignment.util.*
+import com.dmide.currencies.databinding.ListItemBinding
+import com.dmide.currencies.model.Currency
+import com.dmide.currencies.util.*
 import com.jakewharton.rxbinding2.widget.RxTextView
 import com.squareup.picasso.Picasso
 
