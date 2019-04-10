@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Revolut Assignment</string>
+    <string name="app_name">Currencies Converter</string>
     <string name="error_loading">Connection problem</string>
 </resources>
