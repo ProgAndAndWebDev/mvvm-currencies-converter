@@ -1,4 +1,4 @@
-Kotlin app for Revolut Android Developer position assignment.
+Android Kotlin currencies converter app. Based on MVVM architecture.
 
 ### Libraries
 * [Android Architecture Components][arch]
